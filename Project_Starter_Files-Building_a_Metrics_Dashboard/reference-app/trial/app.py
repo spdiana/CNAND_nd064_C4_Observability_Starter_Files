@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, render_template, request, jsonify
 
 from jaeger_client import Config
@@ -14,6 +15,9 @@ from opentelemetry.sdk.trace.export import (
     SimpleExportSpanProcessor,
 )
 
+from prometheus_flask_exporter import PrometheusMetrics
+from prometheus_client import generate_latest
+
 trace.set_tracer_provider(TracerProvider())
 trace.get_tracer_provider().add_span_processor(
     SimpleExportSpanProcessor(ConsoleSpanExporter())
@@ -23,6 +27,10 @@ app = Flask(__name__)
 FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
 
+metrics = PrometheusMetrics(app)
+
+# static information as metric
+metrics.info('app_info', 'BackEnd Application info', version='1.0.3')
 
 #config = Config(
 #        config={},
@@ -69,5 +77,14 @@ def homepage():
 
     return jsonify(homepages)
 
+@app.route('/error')
+def error_page():
+    return 'error', 500
+
+@app.route('/metrics')
+def metrics():
+    return generate_latest()
+
+
 if __name__ == "__main__":
-    app.run(debug=True,)
+    app.run(debug=True)

@@ -1,9 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: trial-app
+  name: trial
 spec:
-  replicas: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   selector:
     matchLabels:
       app: trial
@@ -14,18 +19,21 @@ spec:
     spec:
       containers:
       - name: trial
-        image: ghcr.io/thejaysmith/trial:v1
+        image: 124545/trial:latest
         ports:
-        - containerPort: 8080
+        - name: trial
+          containerPort: 5002
+        imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: trial-service
+  name: trial
 spec:
   selector:
     app: trial
   ports:
-    - port: 8080
-      targetPort: 8080
-  type: LoadBalancer
+  - port: 5002
+    targetPort: 5002
+    nodePort: 30102
+  type: NodePort

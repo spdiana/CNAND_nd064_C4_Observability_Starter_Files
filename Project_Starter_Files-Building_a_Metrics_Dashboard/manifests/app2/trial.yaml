@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trial
+  namespace: monitoring
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: trial
+  template:
+    metadata:
+      name: trial
+      labels:
+        app: trial
+    spec:
+      containers:
+      - name: trial
+        image: 124545/trial:latest
+        ports:
+        - name: trial
+          containerPort: 5002
+        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trial
+  namespace: monitoring
+spec:
+  type: NodePort
+  ports:
+    - port: 5002
+      targetPort: 5002
+      nodePort: 30102
+  selector:
+    app: trial
+#---
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: requests-generator
+#  namespace: monitoring
+#spec:
+#  replicas: 1
+#  strategy:
+#    type: RollingUpdate
+#    rollingUpdate:
+#      maxSurge: 1
+#      maxUnavailable: 0
+#  selector:
+#    matchLabels:
+#      app: requests-generator
+#  template:
+#    metadata:
+#      name: requests-generator
+#      labels:
+#        app: requests-generator
+#    spec:
+#      containers:
+#      - name: requests-generator
+#        image: osamaelgebaly/idtest:idtest_generator
+#        imagePullPolicy: Always
+#
