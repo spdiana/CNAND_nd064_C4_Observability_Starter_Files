@@ -40,30 +40,3 @@ spec:
       nodePort: 30102
   selector:
     app: trial
-#---
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  name: requests-generator
-#  namespace: monitoring
-#spec:
-#  replicas: 1
-#  strategy:
-#    type: RollingUpdate
-#    rollingUpdate:
-#      maxSurge: 1
-#      maxUnavailable: 0
-#  selector:
-#    matchLabels:
-#      app: requests-generator
-#  template:
-#    metadata:
-#      name: requests-generator
-#      labels:
-#        app: requests-generator
-#    spec:
-#      containers:
-#      - name: requests-generator
-#        image: osamaelgebaly/idtest:idtest_generator
-#        imagePullPolicy: Always
-#
