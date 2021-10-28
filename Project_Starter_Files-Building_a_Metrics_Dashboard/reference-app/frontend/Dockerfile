@@ -12,4 +12,9 @@ RUN apt-get update && \
     pip install --upgrade pip && \
     pip install -r requirements.txt
 
-CMD ["gunicorn", "--access-logfile", "-", "--error-logfile", "-", "-w", "4", "-b", "0.0.0.0:5001", "app:app"]
+ENV PROMETHEUS_MULTIPROC_DIR /tmp
+ENV prometheus_multiproc_dir /tmp
+
+# CMD ["gunicorn", "--access-logfile", "-", "--error-logfile", "-c", "config.py", "-w", "4", "-b", "0.0.0.0:5001", "app:app"]
+CMD gunicorn -c config.py -w 4 -b 0.0.0.0:5001 app:app
+# CMD flask run --host=0.0.0.0 --port=5001 # correct syntax

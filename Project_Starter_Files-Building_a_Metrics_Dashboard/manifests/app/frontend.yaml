@@ -4,11 +4,6 @@ metadata:
   name: frontend
 spec:
   replicas: 1
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
   selector:
     matchLabels:
       app: frontend
@@ -18,22 +13,21 @@ spec:
         app: frontend
     spec:
       containers:
-      - name: frontend
-        image: 124545/backend:latest
-        ports:
         - name: frontend
-          containerPort: 5001
-        imagePullPolicy: Always
+          image: 124545/frontend:latest
+          ports:
+            - name: frontend
+              containerPort: 5001
 ---
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
   name: frontend
+  labels:
+    app: frontend
 spec:
   selector:
     app: frontend
   ports:
-  - port: 5001
-    targetPort: 5001
-    # nodePort: 30101
-  type: NodePort
+    - name: frontend
+      port: 5001

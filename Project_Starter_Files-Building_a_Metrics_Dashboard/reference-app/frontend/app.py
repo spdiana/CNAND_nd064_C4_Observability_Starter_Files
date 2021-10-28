@@ -1,24 +1,37 @@
+import time
+import random
+
 from flask import Flask, render_template, request
-from prometheus_flask_exporter import PrometheusMetrics
-from prometheus_client import generate_latest
+# from prometheus_flask_exporter import PrometheusMetrics
+from prometheus_flask_exporter.multiprocess import GunicornInternalPrometheusMetrics
 
 app = Flask(__name__)
-metrics = PrometheusMetrics(app)
+# metrics = PrometheusMetrics(app)
+metrics = GunicornInternalPrometheusMetrics.for_app_factory()
+metrics.init_app(app)
 
 # static information as metric
 metrics.info('app_info', 'FrontEnd Application info', version='1.0.3')
+
+endpoints = ('ep_one', 'ep_two', 'ep_three', 'ep_four', 'not_found', 'error')
+
 
 @app.route('/')
 def homepage():
     return render_template("main.html")
 
+
+@app.route('/not_found')
+def not_f():
+    time.sleep(random.random() * 0.15)
+    return 'error', 404
+
+
 @app.route('/error')
-def error_page():
+def oops():
+    time.sleep(random.random() * 0.13)
     return 'error', 500
 
-@app.route('/metrics')
-def metrics():
-    return generate_latest()
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=False, port=5001)

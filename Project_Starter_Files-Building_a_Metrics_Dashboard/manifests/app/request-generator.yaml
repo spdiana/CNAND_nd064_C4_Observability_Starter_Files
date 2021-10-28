@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: requests-generator
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: requests-generator
+  template:
+    metadata:
+      name: requests-generator
+      labels:
+        app: requests-generator
+    spec:
+      containers:
+        - name: requests-generator
+          image: 124545/request-generator:latest
+          imagePullPolicy: Always

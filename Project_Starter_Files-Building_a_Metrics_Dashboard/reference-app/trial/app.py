@@ -1,5 +1,7 @@
 import logging
 from flask import Flask, render_template, request, jsonify
+# from prometheus_flask_exporter import PrometheusMetrics
+from prometheus_flask_exporter.multiprocess import GunicornInternalPrometheusMetrics
 
 from jaeger_client import Config
 from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
@@ -15,9 +17,6 @@ from opentelemetry.sdk.trace.export import (
     SimpleExportSpanProcessor,
 )
 
-from prometheus_flask_exporter import PrometheusMetrics
-from prometheus_client import generate_latest
-
 trace.set_tracer_provider(TracerProvider())
 trace.get_tracer_provider().add_span_processor(
     SimpleExportSpanProcessor(ConsoleSpanExporter())
@@ -27,18 +26,21 @@ app = Flask(__name__)
 FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
 
-metrics = PrometheusMetrics(app)
+# metrics = PrometheusMetrics(app)
+metrics = GunicornInternalPrometheusMetrics.for_app_factory()
+metrics.init_app(app)
 
 # static information as metric
-metrics.info('app_info', 'BackEnd Application info', version='1.0.3')
+metrics.info('app_info', 'Trial Application info', version='1.0.3')
 
-#config = Config(
+
+# config = Config(
 #        config={},
 #        service_name='your-app-name',
 #        validate=True,
 #        metrics_factory=PrometheusMetricsFactory(service_name_label='your-app-name')
-#)
-#tracer = config.initialize_tracer()
+# )
+# tracer = config.initialize_tracer()
 
 def init_tracer(service):
     logging.getLogger('').handlers = []
@@ -58,7 +60,9 @@ def init_tracer(service):
     # this call also sets opentracing.tracer
     return config.initialize_tracer()
 
+
 tracer = init_tracer('first-service')
+
 
 @app.route('/')
 def homepage():
@@ -72,19 +76,9 @@ def homepage():
                 homepages.append(requests.get(result['company_url']))
             except:
                 return "Unable to get site for %s" % result['company']
-        
-
 
     return jsonify(homepages)
 
-@app.route('/error')
-def error_page():
-    return 'error', 500
-
-@app.route('/metrics')
-def metrics():
-    return generate_latest()
-
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False, port=5002)
