@@ -6,19 +6,21 @@
 include it here to verify the installation
 
 Images in the `answer-img` directory: ks8_***.png
-
+![alt text](./answer-img/k8s_pods.png)
+![alt text](./answer-img/k8s_services.png)
 
 ## Setup the Jaeger and Prometheus source
 *2* Expose Grafana to the internet and then setup Prometheus as a data source. Provide a screenshot of the home page after logging into Grafana.
 
 Image in the `answer-img` directory: grafana1.png, grafana2.png
-
+![alt text](./answer-img/grafana1.png)
+![alt text](./answer-img/grafana2.png)
 
 ## Create a Basic Dashboard
 *3* Create a dashboard in Grafana that shows Prometheus as a source. Take a screenshot and include it here.
 
 Image in the `answer-img` directory: prometheus_grafana_dashboard.png
-
+![alt text](./answer-img/prometheus_grafana_dashboard.png)
 
 ## Describe SLO/SLI
 *4* Describe, in your own words, what the SLIs are, based on an SLO of *monthly uptime* and *request response time*.
@@ -84,13 +86,20 @@ Create a dashboard that show these values over a 24 hour period and take a scree
 Image in the `answer-img` directory: up_time.png
 Image in the `answer-img` directory: http_errors_backend.png/http_errors_frontend.png
 
+![alt text](./answer-img/up_time.png)
+![alt text](./answer-img/http_errors_backend.png)
+![alt text](./answer-img/http_errors_frontend.png)
+
 ## Tracing our Flask App
 *7:*  We will create a Jaeger span to measure the processes on the backend. Once you fill in the span, provide a screenshot of it here.
-Image in the `answer-img` directory: jaeger.png
+Image in the `answer-img` directory: jaeger_span.png
+![alt text](./answer-img/jaeger_span.png)
 
 ## Jaeger in Dashboards
 *8:* Now that the trace is running, let's add the metric to our current Grafana dashboard. Once this is completed, provide a screenshot of it here.
 Image in the `answer-img` directory: jaeger_grafana.png
+
+![alt text](./answer-img/jaeger_grafana.png)
 
 ## Report Error
 *9:* Using the template below, write a trouble ticket for the developers, to explain the errors that you are seeing (400, 500, latency) and
@@ -142,4 +151,6 @@ Image in the `answer-img` directory: sli_dashboard.png
 4: Request duration - number of min, max and avg request duration in seconds
 5: AVG response time - avg request status 2xx
 6: Total of request - total of request by http status
+
+![alt text](./answer-img/sli_dashboard.png)
 
