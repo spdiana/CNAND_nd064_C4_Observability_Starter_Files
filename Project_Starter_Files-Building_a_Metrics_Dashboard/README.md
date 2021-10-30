@@ -98,17 +98,18 @@ to let them know the file that is causing the issue.
 
 TROUBLE TICKET
 
-Name:
+Name: backend service issue on pod
 
-Date:
+Date: 30/10/2021
 
-Subject:
+Subject: connection pool is exhausted
 
-Affected Area:
+Affected Area: customer service
 
-Severity:
+Severity: High
 
-Description:
+Description:  Incident at 30/10/2021 19:00hs, it was discovered that one pod had the connection pool exhausted, 
+resulting in failed check customer status, getting 500 error.
 
 
 ## Creating SLIs and SLOs

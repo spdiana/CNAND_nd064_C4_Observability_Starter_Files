@@ -4,7 +4,7 @@ import threading
 
 import requests
 
-endpoints = ('ep_one', 'ep_two', 'ep_three', 'ep_four', 'not_found', 'error')
+endpoints = ('endpoint_a', 'endpoint_b', 'endpoint_c', 'endpoint_d', 'not_found', 'error')
 
 
 def run():

@@ -76,7 +76,7 @@ mongo = PyMongo(app)
 # static information as metric
 metrics.info('app_info', 'Backend Application info', version='1.0.3')
 
-endpoints = ('ep_one', 'ep_two', 'ep_three', 'ep_four', 'not_found', 'error')
+endpoints = ('endpoint_a', 'endpoint_b', 'endpoint_c', 'endpoint_d', 'not_found', 'error')
 
 
 @app.route("/")
@@ -103,25 +103,25 @@ def add_star():
     return jsonify({'result': output})
 
 
-@app.route('/ep_one')
+@app.route('/endpoint_a')
 def first_route():
-    time.sleep(random.random() * 0.2)
+    time.sleep(random.random() * 1.2)
     return '1'
 
 
-@app.route('/ep_two')
+@app.route('/endpoint_b')
 def the_second():
     time.sleep(random.random() * 0.4)
     return '2'
 
 
-@app.route('/ep_three')
+@app.route('/endpoint_c')
 def test_3rd():
     time.sleep(random.random() * 0.6)
     return '3'
 
 
-@app.route('/ep_four')
+@app.route('/endpoint_d')
 def fourth_one():
     time.sleep(random.random() * 0.8)
     return '4'
@@ -135,6 +135,7 @@ def not_f():
 
 @app.route('/error')
 def oops():
+    time.sleep(random.random() * 0.7)
     return 'error', 500
 
 

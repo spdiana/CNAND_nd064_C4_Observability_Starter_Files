@@ -13,7 +13,7 @@ metrics.init_app(app)
 # static information as metric
 metrics.info('app_info', 'FrontEnd Application info', version='1.0.3')
 
-endpoints = ('ep_one', 'ep_two', 'ep_three', 'ep_four', 'not_found', 'error')
+endpoints = ('endpoint_a', 'endpoint_b', 'endpoint_c', 'endpoint_d', 'not_found', 'error')
 
 
 @app.route('/')
