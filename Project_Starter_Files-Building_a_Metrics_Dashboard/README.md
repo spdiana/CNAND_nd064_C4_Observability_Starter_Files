@@ -115,11 +115,31 @@ resulting in failed check customer status, getting 500 error.
 ## Creating SLIs and SLOs
 *10:* We want to create an SLO guaranteeing that our application has a 99.95% uptime per month. Name three SLIs that you would use to measure
 the success of this SLO.
+1: Error rate
+2: Latency
+3: Availability
 
 ## Building KPIs for our plan
 *11*: Now that we have our SLIs and SLOs, create KPIs to accurately measure these metrics. We will make a dashboard for this, but first write
 them down here.
 
+1: Number of errors
+2: Number of request
+3: Request under 0.25s
+4: Request duration
+5: AVG response time
+6: Total of request
+
 ## Final Dashboard
 *12*: Create a Dashboard containing graphs that capture all the metrics of your KPIs and adequately representing your SLIs and SLOs. Include a
 screenshot of the dashboard here, and write a text description of what graphs are represented in the dashboard.  
+
+Image in the `answer-img` directory: sli_dashboard.png
+
+1: Number of errors - number of request with status 400 and 500
+2: Number of request - number of request with status 2xx
+3: Request under 0.25s - number of request that get less than 250ms
+4: Request duration - number of min, max and avg request duration in seconds
+5: AVG response time - avg request status 2xx
+6: Total of request - total of request by http status
+
