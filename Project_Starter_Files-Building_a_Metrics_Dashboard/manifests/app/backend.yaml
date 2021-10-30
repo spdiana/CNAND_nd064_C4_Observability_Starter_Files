@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
+  annotations:
+    "sidecar.jaegertracing.io/inject": "true"
 spec:
   replicas: 1
   selector:
@@ -15,6 +17,15 @@ spec:
       containers:
         - name: backend
           image: 124545/backend:latest
+          env:
+            - name: JAEGER_SERVICE_NAME
+              value: backend
+            - name: JAEGER_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: JAEGER_AGENT_PORT
+              value: '6831'
           ports:
             - name: backend
               containerPort: 5000

@@ -1,4 +1,5 @@
 import logging
+import requests
 from flask import Flask, render_template, request, jsonify
 # from prometheus_flask_exporter import PrometheusMetrics
 from prometheus_flask_exporter.multiprocess import GunicornInternalPrometheusMetrics
@@ -33,14 +34,14 @@ metrics.init_app(app)
 # static information as metric
 metrics.info('app_info', 'Trial Application info', version='1.0.3')
 
-
 # config = Config(
-#        config={},
-#        service_name='your-app-name',
-#        validate=True,
-#        metrics_factory=PrometheusMetricsFactory(service_name_label='your-app-name')
+#     config={},
+#     service_name='your-app-name',
+#     validate=True,
+#     metrics_factory=PrometheusMetricsFactory(service_name_label='your-app-name')
 # )
 # tracer = config.initialize_tracer()
+
 
 def init_tracer(service):
     logging.getLogger('').handlers = []
@@ -66,7 +67,7 @@ tracer = init_tracer('first-service')
 
 @app.route('/')
 def homepage():
-    return render_template("main.html")
+    # return render_template("main.html")
     with tracer.start_span('get-python-jobs') as span:
         homepages = []
         res = requests.get('https://jobs.github.com/positions.json?description=python')
@@ -81,4 +82,4 @@ def homepage():
 
 
 if __name__ == "__main__":
-    app.run(debug=False, port=5002)
+    app.run(debug=True, port=5002)

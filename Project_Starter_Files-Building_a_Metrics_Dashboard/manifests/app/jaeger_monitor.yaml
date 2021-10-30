@@ -1,0 +1,73 @@
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  labels:
+#    app: jaeger
+#    app.kubernetes.io/component: service-collector
+#    app.kubernetes.io/instance: simplest
+#    app.kubernetes.io/managed-by: jaeger-operator
+#    app.kubernetes.io/name: simplest-collector
+#    app.kubernetes.io/part-of: jaeger
+#  name: simplest-collector-monitoring
+#  namespace: observability
+#spec:
+#  ports:
+#    - name: admin-http
+#      port: 14269
+#      protocol: TCP
+#      targetPort: 14269
+#  selector:
+#    app: jaeger
+#    app.kubernetes.io/component: all-in-one
+#    app.kubernetes.io/instance: simplest
+#    app.kubernetes.io/managed-by: jaeger-operator
+#    app.kubernetes.io/name: simplest
+#    app.kubernetes.io/part-of: jaeger
+#  type: ClusterIP
+#---
+#apiVersion: monitoring.coreos.com/v1
+#kind: PodMonitor
+#metadata:
+#  name: jaeger-components
+#  namespace: monitoring
+#  labels:
+#    release: prometheus
+#spec:
+#  podMetricsEndpoints:
+#    - path: /metrics
+#      port: admin-http
+#  namespaceSelector:
+#    matchNames:
+#      - monitoring
+#  selector:
+#    matchLabels:
+#      app: jaeger
+#apiVersion: monitoring.coreos.com/v1
+#kind: PodMonitor
+#metadata:
+#  name: simplest
+#  namespace: observability
+#spec:
+#  podMetricsEndpoints:
+#    - interval: 5s
+#      targetPort: 14269
+#  selector:
+#    matchLabels:
+#      app: jaeger-operator
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: simplest
+  namespace: observability
+  labels:
+    name: simplest
+    release: prometheus
+spec:
+  endpoints:
+    - port: http-metrics
+  selector:
+    matchLabels:
+      name: jaeger-operator
+
+
